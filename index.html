@@ -108,7 +108,6 @@ document.getElementById('jsonSelection').innerHTML = jsonFiles.map(file =>
 
     </style>
 </head>	
-
 <body
 
     <h1>Choose a Category</h1>
@@ -132,18 +131,22 @@ document.getElementById('jsonSelection').innerHTML = jsonFiles.map(file =>
         let currentPage = 0;
         const recordsPerPage = 10;
 
-    function loadJSON(file) {
-   fetch("https://www.dropbox.com/scl/fi/br52tucs6cf3m9nveqvot/output.json?rlkey=rolimwojv0nbv1sln27pnmjar&st=kz6nfvxz&raw=1")
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(error => console.error("Error loading JSON:", error));
+        function loadJSON(file) {
+    fetch(file)
+        .then(response => response.json())
+        .then(data => {
+            console.log("Loaded JSON Data:", data);
+            processData(data);
+        })
+        .catch(error => console.error("Error loading JSON:", error));
 }
+
 // Example function to process JSON data (customize based on your needs)
 function processData(data) {
     document.getElementById('results').innerHTML = JSON.stringify(data, null, 2);
 }
         // Fetch JSON Data
-        fetch('c:/xmp/htdocs/output.json')
+        fetch('https://www.dropbox.com/scl/fi/br52tucs6cf3m9nveqvot/output.json?rlkey=rolimwojv0nbv1sln27pnmjar&st=kz6nfvxz&raw=1')
             .then(response => response.json())
             .then(data => {
                 jsonData = Array.isArray(data) ? data : [];
