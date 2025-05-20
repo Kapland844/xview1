@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Theme - Video Categories</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .item {
+            width: 45%; /* Two columns */
+            padding: 10px;
+            box-sizing: border-box;
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            margin: 10px;
+            padding: 15px;
+            text-align: left;
+        }
+        h1, h2, p {
+            color: #ffffff;
+        }
+        .buttons, .nav-buttons {
+            margin-bottom: 20px;
+        }
+        .buttons button, .nav-buttons button {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .buttons button:hover, .nav-buttons button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Choose a Category</h1>
+    <div class="buttons" id="categoryButtons">Loading categories...</div>
+
+    <h2>Results</h2>
+    <div class="nav-buttons">
+        <button onclick="previousPage()">Previous</button>
+        <button onclick="nextPage()">Next</button>
+    </div>
+
+    <div id="results" class="container">Select a category to view videos.</div>
+
+    <script>
+        let jsonData = [];
+        let categories = new Set();
+        let filteredResults = [];
+        let currentPage = 0;
+        const recordsPerPage = 10;
+
+        // Fetch JSON Data
+		
+        fetch("https://www.dropbox.com/scl/fi/br52tucs6cf3m9nveqvot/output.json?rlkey=rolimwojv0nbv1sln27pnmjar&st=kz6nfvxz&raw=1")
+				.then(response => response.json())
+				.then(data => console.log(data))
+    			.catch(error => console.error("Error loading JSON:", error));
+
+{
+                jsonData = Array.isArray(data) ? data : [];
+
+                // Extract unique categories
+                jsonData.forEach(item => {
+                    if (item.category) categories.add(item.category);
+                });
+
+                // Generate category buttons dynamically
+                document.getElementById('categoryButtons').innerHTML = 
+                    [...categories].map(category => 
+                        `<button onclick="filterCategory('${category}')">${category}</button>`
+                    ).join("");
+            })
+            .catch(error => {
+                console.error('Error fetching JSON:', error);
+                document.getElementById('categoryButtons').textContent = 'Failed to load categories.';
+            });
+
+        // Function to filter JSON data by category and store results
+        function filterCategory(selectedCategory) {
+            filteredResults = jsonData.filter(item => item.category === selectedCategory);
+            currentPage = 0; // Reset to first page
+            displayPage();
+        }
+
+        // Function to display a set of records
+        function displayPage() {
+            const start = currentPage * recordsPerPage;
+            const end = start + recordsPerPage;
+            const pageResults = filteredResults.slice(start, end);
+
+            let displayContent = pageResults.map(item => 
+                `<div class="item"><h2>${item.title}</h2>${item.iframe}</div>`
+            ).join("");
+
+            document.getElementById('results').innerHTML = displayContent || "<p>No results found.</p>";
+        }
+
+        // Go to the next page
+        function nextPage() {
+            if ((currentPage + 1) * recordsPerPage < filteredResults.length) {
+                currentPage++;
+                displayPage();
+            }
+        }
+
+        // Go to the previous page
+        function previousPage() {
+            if (currentPage > 0) {
+                currentPage--;
+                displayPage();
+            }
+        }
+    </script>
+
+</body>
+</html>
