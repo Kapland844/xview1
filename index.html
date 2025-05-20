@@ -133,13 +133,10 @@ document.getElementById('jsonSelection').innerHTML = jsonFiles.map(file =>
         const recordsPerPage = 10;
 
     function loadJSON(file) {
-    fetch(`http://172.242.147.72:8080/json_data/${file}`)
-        .then(response => response.json())
-        .then(data => {
-            console.log("Loaded JSON Data:", data);
-            processData(data);
-        })
-        .catch(error => console.error("Error fetching JSON:", error));
+   fetch("https://www.dropbox.com/scl/fi/br52tucs6cf3m9nveqvot/output.json?rlkey=rolimwojv0nbv1sln27pnmjar&st=kz6nfvxz&raw=1")
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error("Error loading JSON:", error));
 }
 // Example function to process JSON data (customize based on your needs)
 function processData(data) {
