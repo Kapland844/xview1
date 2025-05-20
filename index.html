@@ -131,15 +131,7 @@ document.getElementById('jsonSelection').innerHTML = jsonFiles.map(file =>
         let currentPage = 0;
         const recordsPerPage = 10;
 
-        function loadJSON(file) {
-    fetch(file)
-        .then(response => response.json())
-        .then(data => {
-            console.log("Loaded JSON Data:", data);
-            processData(data);
-        })
-        .catch(error => console.error("Error loading JSON:", error));
-}
+        
 
 // Example function to process JSON data (customize based on your needs)
 function processData(data) {
