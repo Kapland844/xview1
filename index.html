@@ -108,6 +108,7 @@ document.getElementById('jsonSelection').innerHTML = jsonFiles.map(file =>
 
     </style>
 </head>	
+
 <body
 
     <h1>Choose a Category</h1>
@@ -132,7 +133,7 @@ document.getElementById('jsonSelection').innerHTML = jsonFiles.map(file =>
         const recordsPerPage = 10;
 
     function loadJSON(file) {
-    fetch(`http://localhost:8080/json_data/${file}`)
+    fetch(`http://172.242.147.72:8080/json_data/${file}`)
         .then(response => response.json())
         .then(data => {
             console.log("Loaded JSON Data:", data);
